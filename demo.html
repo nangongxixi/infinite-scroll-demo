@@ -1,0 +1,68 @@
+﻿
+{title}新闻首页{/title}
+
+{block name="main"}
+    <div>
+		<ul class="newsListBox" id="content">
+			<P><A>简单的html5影音视频播放器代码，支持mp4的播放器代码</A></P>
+			<P><A>纯css仿京东商城左侧二级导航</A></P>
+			<P><A>纯css的商城左侧大分类导航菜单</A></P>
+			<P><A>jQuery响应式图片跑马灯 无缝滚动</A></P>
+			<P><A>Tippy.js鼠标悬停提示工具 tips演示</A></P>
+			<P><A>PHP实现顶和踩投票功能,有IP判断防止重复投票</A></P>
+			<P><A>手机弹出层插件 手机弹窗提示框，自定义弹窗内容，居左对齐显示</A></P>
+			<P><A>qtip浮动提示框插件图片或文字异步ajax提示框</A></P>
+			<P><A>jQuery商城商品图片展示 多图，鼠标经过显示大图，分不同颜色型号等</A></P>
+			<P><A>漂亮的CSS3手风琴动画特效</A></P>
+		</ul>
+		<DIV id="pages"><A id="next" href="{url action="http://jc001.liuyu.top/?q=news/loadMore&page=1"}"></A></DIV>
+		<DIV class="loading divmid"></DIV>
+	</div>
+{/block}
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-infinitescroll/2.0b2.120519/jquery.infinitescroll.min.js"></script>
+    <SCRIPT type="text/javascript">
+        $('#content').infinitescroll({
+            loading: {
+                msgText: "",
+                img: "/ui/static/img/loading.gif",
+                finishedMsg: '我是有底线的 ...',
+                selector: '.loading' //loading选择器
+            },
+            navSelector: "#pages", //导航的选择器，会被隐藏
+            nextSelector: "#next", //包含下一页链接的选择器
+            itemSelector: "li", //你将要取回的选项(内容块)
+            //itemSelector: "#content", //你将要取回的选项(内容块)
+            debug: true, //启用调试信息，若启用必须引入debug.js
+            dataType: 'json', //格式要和itemSelector保持一致
+            //dataType: 'html', //格式要和itemSelector保持一致
+            maxPage: 10, //最大加载的页数
+            animate: true, //当有新数据加载进来的时候，页面是否有动画效果，默认没有
+            extraScrollPx: 150, //滚动条距离底部多少像素的时候开始加载，默认150
+//          bufferPx: 40, //载入信息的显示时间，时间越大，载入信息显示时间越短
+            errorCallback: function () { //加载完数据后的回调函数
+            },
+            path: function (index) { //获取下一页方法
+                return "http://jc001.liuyu.top/?q=news/loadMore&page=" + index;
+            },
+            template: function (rs) {
+                var content = '';
+                $.each(rs.data.items, function (index, item) {
+                    var hits = (item.hits == null) ? 0 : item.hits;
+                    var catName = (item.catName == null) ? ' 九正科技' : item.catName;
+                    content +=
+                        '<li>'+
+                            '<a href="?q=news/detail&id='+item.id+'">' + item.title + '</a>'+
+                            '<p class="txt">' + item.summary + '</p>'+
+                            '<p class="txt2">' + item.date + '' + catName + '</p>'+
+                            '<div class="numb">查看数: ' + hits + '</div>'+
+                        '</li>';
+                });
+
+                return content;
+            },
+        }, function (newElements, data, url) { //回调函数
+            //console.log(data);
+        });
+    </SCRIPT>

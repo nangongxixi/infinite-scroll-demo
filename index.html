@@ -1,0 +1,91 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+
+<HEAD>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <TITLE>无限滚动加载数据</TITLE>
+    <STYLE type="text/css">
+        #content {
+            width: 480px;
+            margin: 36px auto;
+            font-size: 1.5em;
+        }
+
+        #content p {
+            margin: 0 0 3em;
+        }
+
+        #pages {
+            text-align: center;
+            margin: 0 auto 72px;
+            font-size: 1.5em;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 20px;
+            margin: 20px 0
+        }
+    </STYLE>
+</HEAD>
+<BODY>
+<DIV>
+    <DIV id="content">
+        <P><A>简单的html5影音视频播放器代码，支持mp4的播放器代码</A></P>
+        <P><A>纯css仿京东商城左侧二级导航</A></P>
+        <P><A>纯css的商城左侧大分类导航菜单</A></P>
+        <P><A>jQuery响应式图片跑马灯 无缝滚动</A></P>
+        <P><A>Tippy.js鼠标悬停提示工具 tips演示</A></P>
+        <P><A>PHP实现顶和踩投票功能,有IP判断防止重复投票</A></P>
+        <P><A>手机弹出层插件 手机弹窗提示框，自定义弹窗内容，居左对齐显示</A></P>
+        <P><A>qtip浮动提示框插件图片或文字异步ajax提示框</A></P>
+        <P><A>jQuery商城商品图片展示 多图，鼠标经过显示大图，分不同颜色型号等</A></P>
+        <P><A>漂亮的CSS3手风琴动画特效</A></P>
+	</DIV>
+    <DIV id="pages"><A id="next" href="http://demo.sucaihuo.com/108/page.php?p=1">下一页</A></DIV>
+    <DIV class="loading"></DIV>
+</DIV>
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-infinitescroll/2.0b2.120519/jquery.infinitescroll.min.js"></script>
+
+<SCRIPT type="text/javascript">
+    $('#content').infinitescroll({
+        loading: {
+            msgText: "",
+            img: "loading.gif",
+            finishedMsg: '没有新数据了哦...',
+            selector: '.loading' //loading选择器
+        },
+        navSelector: "#pages", //导航的选择器，会被隐藏
+        nextSelector: "#next", //包含下一页链接的选择器
+        itemSelector: "p", //你将要取回的选项(内容块)
+        debug: true, //启用调试信息，若启用必须引入debug.js
+        dataType: 'html', //格式要和itemSelector保持一致
+		//dataType: 'json', //格式要和itemSelector保持一致
+        maxPage: 5, //最大加载的页数
+//      animate: true, //当有新数据加载进来的时候，页面是否有动画效果，默认没有
+        extraScrollPx: 150, //滚动条距离底部多少像素的时候开始加载，默认150
+//      bufferPx: 40, //载入信息的显示时间，时间越大，载入信息显示时间越短
+        errorCallback: function () { //加载完数据后的回调函数
+
+        },
+        path: function (index) { //获取下一页方法
+            return "http://demo.sucaihuo.com/108/page.php?p=" + index;
+        },
+		/*如果接口返回的是json，就把上面的dataType改成‘json’，然后这里接受数据处理后添加到页面*/
+		template: function (rs) {
+			var content='';			
+			console.log(rs);
+			$.each(rs, function (index, item) {				
+				content += '<li>'+ item.title +'</li>';
+			});
+
+			return content;
+		},
+    }, function (newElements, data, url) { //回调函数
+        //console.log(data);
+        //alert(url);
+    });
+</SCRIPT>
+</BODY>
+</HTML>
